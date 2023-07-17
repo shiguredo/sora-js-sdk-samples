@@ -72,6 +72,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
     import.meta.env.VITE_DEFAULT_SIGNALING_URL
   document.querySelector<HTMLInputElement>('#channel-id')!.value =
     import.meta.env.VITE_DEFAULT_CHANNEL_ID
+  document.querySelector<HTMLInputElement>('#access-token')!.value =
+    import.meta.env.VITE_DEFAULT_ACCESS_TOKEN
 
   document.querySelector('#connect')?.addEventListener('click', connect)
   document.querySelector('#disconnect')?.addEventListener('click', disconnect)
