@@ -1,0 +1,26 @@
+{
+  // These tasks will run in order when initializing your CodeSandbox project.
+  "setupTasks": [
+    {
+      "name": "Install Dependencies",
+      "command": "pnpm install"
+    }
+  ],
+
+  // These tasks can be run from CodeSandbox. Running one will open a log in the app.
+  "tasks": {
+    "hello-sora": {
+      "name": "hello-sora",
+      "command": "pnpm hello-sora",
+      "runAtStart": true,
+      "preview": {
+        "port": 5173
+      }
+    },
+    "video-codec-type": {
+      "name": "video-codec-type",
+      "command": "pnpm video-codec-type",
+      "runAtStart": false
+    }
+  }
+}
