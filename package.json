@@ -1,0 +1,22 @@
+{
+  "name": "sora-js-sdk-samples",
+  "private": true,
+  "author": "Shiguredo Inc.",
+  "license": "Apache-2.0",
+  "scripts": {
+    "hello-sora": "pnpm --filter=./hello-sora run dev",
+    "video-codec-type": "pnpm --filter=./video-codec-type run dev"
+  },
+  "devDependencies": {
+    "prettier": "3.0.0",
+    "typescript": "5.1.6",
+    "vite": "4.4.4"
+  },
+  "dependencies": {
+    "sora-js-sdk": "2023.2.0-canary.1"
+  },
+  "packageManager": "pnpm@8.6.7",
+  "engines": {
+    "node": ">=18"
+  }
+}
