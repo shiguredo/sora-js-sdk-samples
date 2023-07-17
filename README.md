@@ -24,11 +24,21 @@ Please read https://github.com/shiguredo/oss/blob/master/README.en.md before use
 $ pnpm install
 ```
 
-- hello-sora
-  - hello-sora/ で pnpm run dev
-- video-codec-type
-  - 映像コーデックが指定可能です
-  - video-codec-type/ で pnpm run dev
+### hello-sora
+
+送受信のみができるサンプルです。複数のタブやブラウザで開いてみてください。
+
+```console
+$ pnpm run hello-sora
+```
+
+### video-codec-type
+
+hello-sora に映像コーデックを指定できるようにしたサンプルです。
+
+```
+$ pnpm run video-codec-type
+```
 
 ### 環境変数設定
 
