@@ -8,20 +8,25 @@ let localStream: MediaStream
 const connect = async () => {
   const signalingUrl = document.querySelector<HTMLInputElement>('#signaling-url')!.value
   const channelId = document.querySelector<HTMLInputElement>('#channel-id')!.value
+  const accessToken = document.querySelector<HTMLInputElement>('#access-token')!.value
 
   sora = Sora.connection(signalingUrl, false)
   // metadata はここでは undefined を指定
   const videoCodecType = document.querySelector<HTMLSelectElement>('#video-codec-type')!
     .value as VideoCodecType
-  sendrecv = sora.sendrecv(channelId, undefined, {
-    audio: true,
-    video: true,
-    // videoCodecType を選択
-    videoCodecType: videoCodecType,
-    videoBitRate: 1000,
-    simulcast: true,
-    spotlight: true,
-  })
+  sendrecv = sora.sendrecv(
+    channelId,
+    { access_token: accessToken },
+    {
+      audio: true,
+      video: true,
+      // videoCodecType を選択
+      videoCodecType: videoCodecType,
+      videoBitRate: 1000,
+      simulcast: true,
+      spotlight: true,
+    },
+  )
 
   sendrecv.on('track', (event) => {
     // ストリームは一つしか入ってこない
