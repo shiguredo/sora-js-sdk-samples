@@ -8,10 +8,11 @@ let localStream: MediaStream
 const connect = async () => {
   const signalingUrl = document.querySelector<HTMLInputElement>('#signaling-url')!.value
   const channelId = document.querySelector<HTMLInputElement>('#channel-id')!.value
+  const accessToken = document.querySelector<HTMLInputElement>('#access-token')!.value
 
   sora = Sora.connection(signalingUrl, false)
-  // metadata はここでは undefined を指定
-  sendrecv = sora.sendrecv(channelId, undefined, { audio: false })
+  // metadata はここでは access-token を追加
+  sendrecv = sora.sendrecv(channelId, { access_token: accessToken }, { audio: false })
 
   sendrecv.on('track', (event) => {
     // ストリームは一つしか入ってこない
