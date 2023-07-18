@@ -20,6 +20,8 @@ Please read https://github.com/shiguredo/oss/blob/master/README.en.md before use
 
 ## 利用方法
 
+### インストール
+
 ```console
 $ pnpm install
 ```
