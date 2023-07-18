@@ -22,7 +22,7 @@ importers:
         specifier: 4.4.4
         version: 4.4.4
 
-  hello-sora: {}
+  sendrecv: {}
 
   video-codec-type: {}
 

@@ -4,7 +4,7 @@
   "author": "Shiguredo Inc.",
   "license": "Apache-2.0",
   "scripts": {
-    "hello-sora": "pnpm --filter=./hello-sora run dev",
+    "sendrecv": "pnpm --filter=./sendrecv run dev",
     "video-codec-type": "pnpm --filter=./video-codec-type run dev"
   },
   "devDependencies": {
