@@ -10,8 +10,8 @@
   // These tasks can be run from CodeSandbox. Running one will open a log in the app.
   "tasks": {
     "hello-sora": {
-      "name": "hello-sora",
-      "command": "pnpm hello-sora",
+      "name": "sendrecv",
+      "command": "pnpm sendrecv",
       "runAtStart": true,
       "preview": {
         "port": 5173
