@@ -24,17 +24,27 @@ Please read https://github.com/shiguredo/oss/blob/master/README.en.md before use
 $ pnpm install
 ```
 
-### hello-sora
+### sendrecv
 
-送受信のみができるサンプルです。複数のタブやブラウザで開いてみてください。
+送受信ができるサンプルです。
+
+- シグナリング URL 指定
+- チャネル ID 指定
+- メタデータ指定
+- 接続ボタン
+- 切断ボタン
+
+複数のタブやブラウザで開いてみてください。
 
 ```console
-$ pnpm run hello-sora
+$ pnpm run sendrecv
 ```
+
+[CodeSandbox](https://codesandbox.io/p/github/shiguredo/sora-js-sdk-samples/codesandbox/sendrecv)
 
 ### video-codec-type
 
-hello-sora に映像コーデックを指定できるようにしたサンプルです。
+sendrecv に映像コーデックを指定できるようにしたサンプルです。
 
 ```
 $ pnpm run video-codec-type
