@@ -32,7 +32,8 @@ $ pnpm install
 
 - シグナリング URL 指定
 - チャネル ID 指定
-- メタデータ指定
+- アクセストークン指定
+  - `metadata: {access_token: "<access_token>"}`
 - 接続ボタン
 - 切断ボタン
 
@@ -52,7 +53,8 @@ sendrecv に映像コーデックを指定できるようにしたサンプル�
 
 - シグナリング URL 指定
 - チャネル ID 指定
-- メタデータ指定
+- アクセストークン指定
+  - `metadata: {access_token: "<access_token>"}`
 - ビデオコーデックタイプ指定
 - 接続ボタン
 - 切断ボタン
