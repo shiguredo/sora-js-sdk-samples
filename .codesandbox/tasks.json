@@ -12,15 +12,15 @@
     "hello-sora": {
       "name": "sendrecv",
       "command": "pnpm sendrecv",
-      "runAtStart": true,
-      "preview": {
-        "port": 5173
-      }
+      "runAtStart": false
     },
     "video-codec-type": {
       "name": "video-codec-type",
       "command": "pnpm video-codec-type",
-      "runAtStart": false
+      "runAtStart": true,
+      "preview": {
+        "port": 5173
+      }
     }
   }
 }
