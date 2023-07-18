@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-このリポジトリには、 [Sora JavaScript SDK](https://github.com/shiguredo/sora-js-sdk) を利用したサンプルアプリを掲載しています。実際の利用シーンに即したサンプルをご用意しておりますので、目的に応じた Sora JavaScript SDK の使い方を簡単に学ぶことができます。
+このリポジトリには、 [Sora JavaScript SDK](https://github.com/shiguredo/sora-js-sdk) を利用したサンプルアプリを掲載しています。
 
 ## About Shiguredo's open source software
 
