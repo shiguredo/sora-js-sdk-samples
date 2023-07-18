@@ -34,7 +34,7 @@ $ pnpm install
 - 接続ボタン
 - 切断ボタン
 
-複数のタブやブラウザで開いてみてください。
+複数のタブやブラウザで開いて接続してみてください。
 
 ```console
 $ pnpm run sendrecv
@@ -46,9 +46,22 @@ $ pnpm run sendrecv
 
 sendrecv に映像コーデックを指定できるようにしたサンプルです。
 
+送受信ができるサンプルです。
+
+- シグナリング URL 指定
+- チャネル ID 指定
+- メタデータ指定
+- ビデオコーデックタイプ指定
+- 接続ボタン
+- 切断ボタン
+
+複数のタブやブラウザで開いて接続してみてください。
+
 ```
 $ pnpm run video-codec-type
 ```
+
+[CodeSandbox](https://codesandbox.io/p/github/shiguredo/sora-js-sdk-samples/codesandbox/video-codec-type)
 
 ### 環境変数設定
 
