@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Sora JS SDK サンプル集</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32'></svg>" />
+</head>
+
+<body>
+  <label for="signaling-url">Signaling URL:</label>
+  <input type="text" id="signaling-url" name="signaling-url" size="64">
+  <br>
+  <label for="channel-id">Channel ID:</label>
+  <input type="text" id="channel-id" name="channel-id" size="64">
+  <hr />
+  <label for="access-token">Access Token:</label>
+  <input type="text" id="access-token" name="access-token" size="64">
+  <hr />
+
+  <video id="local-video" autoplay="" playsinline="" controls="" muted=""></video>
+  <hr />
+  <div id="remote-videos"></div>
+
+  <button id="connect">接続</button>
+  <button id="disconnect">切断</button>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+
+</html>
