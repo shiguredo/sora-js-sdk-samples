@@ -22,6 +22,8 @@ importers:
         specifier: 4.4.4
         version: 4.4.4
 
+  screen-capture: {}
+
   sendrecv: {}
 
   video-codec-type: {}

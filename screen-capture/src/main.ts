@@ -24,12 +24,12 @@ const connect = async () => {
     }
   })
 
-  // gUM で音声と映像を取得する
+  // gDM で画面の映像を取得する
   screeCaptureStream = await navigator.mediaDevices.getDisplayMedia({ audio: false, video: true })
   // 接続する
   await sendonly.connect(screeCaptureStream)
   // null ではない事を前提としている
-  document.querySelector<HTMLVideoElement>('#local-video')!.srcObject = screeCaptureStream
+  document.querySelector<HTMLVideoElement>('#screen-capture-video')!.srcObject = screeCaptureStream
 }
 
 const disconnect = async () => {
