@@ -51,26 +51,16 @@ const connectSendrecv = async () => {
     }
   })
 
+  sendrecv.on('disconnect', (event) => {
+    document.querySelector<HTMLVideoElement>('#local-video')!.srcObject = localStream
+  })
+
   // gUM で音声と映像を取得する
   localStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true })
   // 接続する
   await sendrecv.connect(localStream)
   // null ではない事を前提としている
   document.querySelector<HTMLVideoElement>('#local-video')!.srcObject = localStream
-}
-
-const disconnect = async () => {
-  // 接続を切断する
-  await sendrecv.disconnect()
-  // remoteVideos を全て削除する
-  const remoteVideos = document.querySelector('#remote-videos')
-  if (remoteVideos !== null) {
-    while (remoteVideos.firstChild) {
-      remoteVideos.firstChild.remove()
-    }
-  }
-  // 自分の MediaStream の参照を消す
-  document.querySelector<HTMLVideoElement>('#local-video')!.srcObject = null
 }
 
 const connectScreenCapture = async () => {
@@ -101,6 +91,8 @@ const connectScreenCapture = async () => {
     }
   })
 
+  sendrecv.on('disconnect', (event) => {})
+
   // gDM で画面の映像を取得する
   screeCaptureStream = await navigator.mediaDevices.getDisplayMedia({ audio: false, video: true })
   // 接続する
@@ -110,6 +102,9 @@ const connectScreenCapture = async () => {
 }
 
 const disconnectSendrecv = async () => {
+  if (!sendrecv) {
+    return
+  }
   // 接続を切断する
   await sendrecv.disconnect()
   // remoteVideos を全て削除する
@@ -121,11 +116,29 @@ const disconnectSendrecv = async () => {
   }
   // 自分の MediaStream の参照を消す
   document.querySelector<HTMLVideoElement>('#local-video')!.srcObject = null
+
+  if (!localStream) {
+    return
+  }
+
+  // 各 track を停止
+  localStream.getTracks().forEach((track) => track.stop())
 }
 
 const disconnectScreenCapture = async () => {
+  if (!sendonly) {
+    return
+  }
+
   // 接続を切断する
   await sendonly.disconnect()
+
+  if (!screeCaptureStream) {
+    return
+  }
+
+  // 各 track を停止
+  screeCaptureStream.getTracks().forEach((track) => track.stop())
 }
 
 // DOMContentLoaded イベントは、ページ全体が読み込まれ、DOMが準備できたときに発生する

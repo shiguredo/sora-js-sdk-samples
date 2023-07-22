@@ -50,6 +50,9 @@ const connect = async () => {
 }
 
 const disconnect = async () => {
+  if (!sendrecv) {
+    return
+  }
   // 接続を切断する
   await sendrecv.disconnect()
   // remoteVideos を全て削除する
@@ -61,6 +64,13 @@ const disconnect = async () => {
   }
   // 自分の MediaStream の参照を消す
   document.querySelector<HTMLVideoElement>('#local-video')!.srcObject = null
+
+  if (!localStream) {
+    return
+  }
+
+  // MediaStream の参照を消す
+  localStream.getTracks().forEach((track) => track.stop())
 }
 
 // DOMContentLoaded イベントは、ページ全体が読み込まれ、DOMが準備できたときに発生する
