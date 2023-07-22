@@ -7,6 +7,8 @@ let sendonly: ConnectionPublisher
 let localStream: MediaStream
 let screeCaptureStream: MediaStream
 
+const bundleId: string = 'screen-capture'
+
 const connectSendrecv = async () => {
   const signalingUrl = document.querySelector<HTMLInputElement>('#signaling-url')!.value
   const channelId = document.querySelector<HTMLInputElement>('#channel-id')!.value
@@ -14,7 +16,13 @@ const connectSendrecv = async () => {
 
   sora = Sora.connection(signalingUrl, false)
   // metadata はここでは access-token を追加
-  sendrecv = sora.sendrecv(channelId, { access_token: accessToken }, { audio: false })
+  sendrecv = sora.sendrecv(
+    channelId,
+    { access_token: accessToken },
+    {
+      bundleId: bundleId,
+    },
+  )
 
   sendrecv.on('track', (event) => {
     // ストリームは一つしか入ってこない
@@ -72,7 +80,16 @@ const connectScreenCapture = async () => {
 
   sora = Sora.connection(signalingUrl, false)
   // metadata はここでは access-token を追加
-  sendonly = sora.sendonly(channelId, { access_token: accessToken }, { audio: false })
+  sendonly = sora.sendonly(
+    channelId,
+    {
+      access_token: accessToken,
+    },
+    {
+      audio: false,
+      bundleId: bundleId,
+    },
+  )
 
   // removetrack は MediaStream.onremovetrack
   sendonly.on('removetrack', (event) => {
@@ -89,7 +106,7 @@ const connectScreenCapture = async () => {
   // 接続する
   await sendonly.connect(screeCaptureStream)
   // null ではない事を前提としている
-  document.querySelector<HTMLVideoElement>('#screen-capture-video')!.srcObject = screeCaptureStream
+  // document.querySelector<HTMLVideoElement>('#screen-capture-video')!.srcObject = screeCaptureStream
 }
 
 const disconnectSendrecv = async () => {
@@ -104,16 +121,11 @@ const disconnectSendrecv = async () => {
   }
   // 自分の MediaStream の参照を消す
   document.querySelector<HTMLVideoElement>('#local-video')!.srcObject = null
-
-  // sendrecv を終了するときはスクリーンキャプチャも終了する
-  await disconnectScreenCapture()
 }
 
 const disconnectScreenCapture = async () => {
   // 接続を切断する
   await sendonly.disconnect()
-  // 自分の MediaStream の参照を消す
-  document.querySelector<HTMLVideoElement>('#screen-capture-video')!.srcObject = null
 }
 
 // DOMContentLoaded イベントは、ページ全体が読み込まれ、DOMが準備できたときに発生する
