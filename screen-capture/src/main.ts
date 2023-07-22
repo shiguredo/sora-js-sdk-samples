@@ -2,10 +2,70 @@ import Sora, { SoraConnection, ConnectionPublisher } from 'sora-js-sdk'
 
 // Sora の接続
 let sora: SoraConnection
+let sendrecv: ConnectionPublisher
 let sendonly: ConnectionPublisher
+let localStream: MediaStream
 let screeCaptureStream: MediaStream
 
-const connect = async () => {
+const connectSendrecv = async () => {
+  const signalingUrl = document.querySelector<HTMLInputElement>('#signaling-url')!.value
+  const channelId = document.querySelector<HTMLInputElement>('#channel-id')!.value
+  const accessToken = document.querySelector<HTMLInputElement>('#access-token')!.value
+
+  sora = Sora.connection(signalingUrl, false)
+  // metadata はここでは access-token を追加
+  sendrecv = sora.sendrecv(channelId, { access_token: accessToken }, { audio: false })
+
+  sendrecv.on('track', (event) => {
+    // ストリームは一つしか入ってこない
+    const remoteStream = event.streams[0]
+
+    const remoteVideoStreamId = `remote-video-${remoteStream.id}`
+    // その stream.id が存在しない場合のみ HTML を追加
+    if (!document.querySelector(`#${remoteVideoStreamId}`)) {
+      const video = document.createElement('video')
+      video.id = remoteVideoStreamId
+      video.autoplay = true
+      video.playsInline = true
+      video.srcObject = remoteStream
+      // null ではない事を前提としてる
+      document.querySelector('#remote-videos')?.appendChild(video)
+    }
+  })
+
+  // removetrack は MediaStream.onremovetrack
+  sendrecv.on('removetrack', (event) => {
+    // target.id から stream.id を取得する
+    // target は MediaStream なので id を持っている
+    const target = event.target as MediaStream
+    if (target) {
+      document.querySelector<HTMLVideoElement>(`#remote-video-${target.id}`)!.remove()
+    }
+  })
+
+  // gUM で音声と映像を取得する
+  localStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+  // 接続する
+  await sendrecv.connect(localStream)
+  // null ではない事を前提としている
+  document.querySelector<HTMLVideoElement>('#local-video')!.srcObject = localStream
+}
+
+const disconnect = async () => {
+  // 接続を切断する
+  await sendrecv.disconnect()
+  // remoteVideos を全て削除する
+  const remoteVideos = document.querySelector('#remote-videos')
+  if (remoteVideos !== null) {
+    while (remoteVideos.firstChild) {
+      remoteVideos.firstChild.remove()
+    }
+  }
+  // 自分の MediaStream の参照を消す
+  document.querySelector<HTMLVideoElement>('#local-video')!.srcObject = null
+}
+
+const connectScreenCapture = async () => {
   const signalingUrl = document.querySelector<HTMLInputElement>('#signaling-url')!.value
   const channelId = document.querySelector<HTMLInputElement>('#channel-id')!.value
   const accessToken = document.querySelector<HTMLInputElement>('#access-token')!.value
@@ -32,9 +92,9 @@ const connect = async () => {
   document.querySelector<HTMLVideoElement>('#screen-capture-video')!.srcObject = screeCaptureStream
 }
 
-const disconnect = async () => {
+const disconnectSendrecv = async () => {
   // 接続を切断する
-  await sendonly.disconnect()
+  await sendrecv.disconnect()
   // remoteVideos を全て削除する
   const remoteVideos = document.querySelector('#remote-videos')
   if (remoteVideos !== null) {
@@ -44,6 +104,16 @@ const disconnect = async () => {
   }
   // 自分の MediaStream の参照を消す
   document.querySelector<HTMLVideoElement>('#local-video')!.srcObject = null
+
+  // sendrecv を終了するときはスクリーンキャプチャも終了する
+  await disconnectScreenCapture()
+}
+
+const disconnectScreenCapture = async () => {
+  // 接続を切断する
+  await sendonly.disconnect()
+  // 自分の MediaStream の参照を消す
+  document.querySelector<HTMLVideoElement>('#screen-capture-video')!.srcObject = null
 }
 
 // DOMContentLoaded イベントは、ページ全体が読み込まれ、DOMが準備できたときに発生する
@@ -58,6 +128,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
   document.querySelector<HTMLInputElement>('#access-token')!.value =
     import.meta.env.VITE_DEFAULT_ACCESS_TOKEN
 
-  document.querySelector('#connect')?.addEventListener('click', connect)
-  document.querySelector('#disconnect')?.addEventListener('click', disconnect)
+  document.querySelector('#connectSendrecv')?.addEventListener('click', connectSendrecv)
+  document.querySelector('#connectScreenCapture')?.addEventListener('click', connectScreenCapture)
+  document.querySelector('#disconnectSendrecv')?.addEventListener('click', disconnectSendrecv)
+  document
+    .querySelector('#disconnectScreenCapture')
+    ?.addEventListener('click', disconnectScreenCapture)
 })
