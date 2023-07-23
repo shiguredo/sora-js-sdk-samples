@@ -65,6 +65,7 @@ const disconnect = async () => {
   // 自分の MediaStream の参照を消す
   document.querySelector<HTMLVideoElement>('#local-video')!.srcObject = null
 
+  // localStream がなかったら何もしない
   if (!localStream) {
     return
   }
