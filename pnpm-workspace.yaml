@@ -1,3 +1,4 @@
 packages:
   - "sendrecv"
   - "video-codec-type"
+  - "screen-capture"

@@ -6,9 +6,14 @@ let sendrecv: ConnectionPublisher
 let localStream: MediaStream
 
 const connect = async () => {
-  const signalingUrl = document.querySelector<HTMLInputElement>('#signaling-url')!.value
-  const channelId = document.querySelector<HTMLInputElement>('#channel-id')!.value
-  const accessToken = document.querySelector<HTMLInputElement>('#access-token')!.value
+  const signalingUrl = document.querySelector<HTMLInputElement>('#signaling-url')?.value
+  const channelId = document.querySelector<HTMLInputElement>('#channel-id')?.value
+  const accessToken = document.querySelector<HTMLInputElement>('#access-token')?.value
+
+  if (!signalingUrl || !channelId || !accessToken) {
+    console.error('Missing required input values')
+    return
+  }
 
   sora = Sora.connection(signalingUrl, false)
   // metadata はここでは access-token を追加
@@ -27,7 +32,7 @@ const connect = async () => {
       video.playsInline = true
       video.srcObject = remoteStream
       // null ではない事を前提としてる
-      document.querySelector('#remote-videos')?.appendChild(video)
+      document.querySelector<HTMLDivElement>('#remote-videos')?.appendChild(video)
     }
   })
 
@@ -35,9 +40,8 @@ const connect = async () => {
   sendrecv.on('removetrack', (event) => {
     // target.id から stream.id を取得する
     // target は MediaStream なので id を持っている
-    const target = event.target as MediaStream
-    if (target) {
-      document.querySelector<HTMLVideoElement>(`#remote-video-${target.id}`)!.remove()
+    if (event.target instanceof MediaStream) {
+      document.querySelector<HTMLVideoElement>(`#remote-video-${event.target.id}`)!.remove()
     }
   })
 
@@ -51,16 +55,19 @@ const connect = async () => {
 
 const disconnect = async () => {
   // 接続を切断する
-  await sendrecv.disconnect()
+  await sendrecv?.disconnect()
+
   // remoteVideos を全て削除する
   const remoteVideos = document.querySelector('#remote-videos')
-  if (remoteVideos !== null) {
-    while (remoteVideos.firstChild) {
-      remoteVideos.firstChild.remove()
-    }
+  while (remoteVideos?.firstChild) {
+    remoteVideos.firstChild.remove()
   }
+
   // 自分の MediaStream の参照を消す
   document.querySelector<HTMLVideoElement>('#local-video')!.srcObject = null
+
+  // 自分の MediaStream の各トラックを停止する
+  localStream?.getTracks().forEach((track) => track.stop())
 }
 
 // DOMContentLoaded イベントは、ページ全体が読み込まれ、DOMが準備できたときに発生する

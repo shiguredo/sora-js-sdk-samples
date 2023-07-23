@@ -1,28 +1,26 @@
-import Sora, { SoraConnection, ConnectionPublisher, VideoCodecType } from 'sora-js-sdk'
+import Sora, { SoraConnection, ConnectionPublisher } from 'sora-js-sdk'
 
 // Sora の接続
 let sora: SoraConnection
 let sendrecv: ConnectionPublisher
+let sendonly: ConnectionPublisher
 let localStream: MediaStream
+let screeCaptureStream: MediaStream
 
-const connect = async () => {
+const bundleId: string = 'screen-capture'
+
+const connectSendrecv = async () => {
   const signalingUrl = document.querySelector<HTMLInputElement>('#signaling-url')!.value
   const channelId = document.querySelector<HTMLInputElement>('#channel-id')!.value
   const accessToken = document.querySelector<HTMLInputElement>('#access-token')!.value
 
   sora = Sora.connection(signalingUrl, false)
-  // metadata はここでは undefined を指定
-  const videoCodecType = document.querySelector<HTMLSelectElement>('#video-codec-type')!
-    .value as VideoCodecType
+  // metadata はここでは access-token を追加
   sendrecv = sora.sendrecv(
     channelId,
     { access_token: accessToken },
     {
-      audio: true,
-      video: true,
-      // videoCodecType を選択
-      videoCodecType: videoCodecType,
-      videoBitRate: 1000,
+      bundleId: bundleId,
     },
   )
 
@@ -46,9 +44,14 @@ const connect = async () => {
   // removetrack は MediaStream.onremovetrack
   sendrecv.on('removetrack', (event) => {
     // target.id から stream.id を取得する
+    // target は MediaStream なので id を持っている
     if (event.target instanceof MediaStream) {
       document.querySelector<HTMLVideoElement>(`#remote-video-${event.target.id}`)!.remove()
     }
+  })
+
+  sendrecv.on('disconnect', (event) => {
+    document.querySelector<HTMLVideoElement>('#local-video')!.srcObject = localStream
   })
 
   // gUM で音声と映像を取得する
@@ -59,7 +62,45 @@ const connect = async () => {
   document.querySelector<HTMLVideoElement>('#local-video')!.srcObject = localStream
 }
 
-const disconnect = async () => {
+const connectScreenCapture = async () => {
+  const signalingUrl = document.querySelector<HTMLInputElement>('#signaling-url')!.value
+  const channelId = document.querySelector<HTMLInputElement>('#channel-id')!.value
+  const accessToken = document.querySelector<HTMLInputElement>('#access-token')!.value
+
+  sora = Sora.connection(signalingUrl, false)
+  // metadata はここでは access-token を追加
+  sendonly = sora.sendonly(
+    channelId,
+    {
+      access_token: accessToken,
+    },
+    {
+      audio: false,
+      bundleId: bundleId,
+    },
+  )
+
+  // removetrack は MediaStream.onremovetrack
+  sendonly.on('removetrack', (event) => {
+    // target.id から stream.id を取得する
+    // target は MediaStream なので id を持っている
+    const target = event.target as MediaStream
+    if (target) {
+      document.querySelector<HTMLVideoElement>(`#remote-video-${target.id}`)!.remove()
+    }
+  })
+
+  sendrecv.on('disconnect', (event) => {})
+
+  // gDM で画面の映像を取得する
+  screeCaptureStream = await navigator.mediaDevices.getDisplayMedia({ audio: false, video: true })
+  // 接続する
+  await sendonly.connect(screeCaptureStream)
+  // null ではない事を前提としている
+  // document.querySelector<HTMLVideoElement>('#screen-capture-video')!.srcObject = screeCaptureStream
+}
+
+const disconnectSendrecv = async () => {
   // 接続を切断する
   await sendrecv?.disconnect()
 
@@ -72,8 +113,16 @@ const disconnect = async () => {
   // 自分の MediaStream の参照を消す
   document.querySelector<HTMLVideoElement>('#local-video')!.srcObject = null
 
-  // 自分の MediaStream の各トラックを停止する
+  // 各 track を停止
   localStream?.getTracks().forEach((track) => track.stop())
+}
+
+const disconnectScreenCapture = async () => {
+  // 接続を切断する
+  await sendonly?.disconnect()
+
+  // 各 track を停止
+  screeCaptureStream?.getTracks().forEach((track) => track.stop())
 }
 
 // DOMContentLoaded イベントは、ページ全体が読み込まれ、DOMが準備できたときに発生する
@@ -88,6 +137,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
   document.querySelector<HTMLInputElement>('#access-token')!.value =
     import.meta.env.VITE_DEFAULT_ACCESS_TOKEN
 
-  document.querySelector('#connect')?.addEventListener('click', connect)
-  document.querySelector('#disconnect')?.addEventListener('click', disconnect)
+  document.querySelector('#connectSendrecv')?.addEventListener('click', connectSendrecv)
+  document.querySelector('#connectScreenCapture')?.addEventListener('click', connectScreenCapture)
+  document.querySelector('#disconnectSendrecv')?.addEventListener('click', disconnectSendrecv)
+  document
+    .querySelector('#disconnectScreenCapture')
+    ?.addEventListener('click', disconnectScreenCapture)
 })
