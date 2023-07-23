@@ -102,43 +102,28 @@ const connectScreenCapture = async () => {
 }
 
 const disconnectSendrecv = async () => {
-  if (!sendrecv) {
-    return
-  }
   // 接続を切断する
-  await sendrecv.disconnect()
+  await sendrecv?.disconnect()
+
   // remoteVideos を全て削除する
   const remoteVideos = document.querySelector('#remote-videos')
-  if (remoteVideos !== null) {
-    while (remoteVideos.firstChild) {
-      remoteVideos.firstChild.remove()
-    }
+  while (remoteVideos?.firstChild) {
+    remoteVideos.firstChild.remove()
   }
+
   // 自分の MediaStream の参照を消す
   document.querySelector<HTMLVideoElement>('#local-video')!.srcObject = null
 
-  if (!localStream) {
-    return
-  }
-
   // 各 track を停止
-  localStream.getTracks().forEach((track) => track.stop())
+  localStream?.getTracks().forEach((track) => track.stop())
 }
 
 const disconnectScreenCapture = async () => {
-  if (!sendonly) {
-    return
-  }
-
   // 接続を切断する
-  await sendonly.disconnect()
-
-  if (!screeCaptureStream) {
-    return
-  }
+  await sendonly?.disconnect()
 
   // 各 track を停止
-  screeCaptureStream.getTracks().forEach((track) => track.stop())
+  screeCaptureStream?.getTracks().forEach((track) => track.stop())
 }
 
 // DOMContentLoaded イベントは、ページ全体が読み込まれ、DOMが準備できたときに発生する

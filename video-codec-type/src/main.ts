@@ -23,8 +23,6 @@ const connect = async () => {
       // videoCodecType を選択
       videoCodecType: videoCodecType,
       videoBitRate: 1000,
-      simulcast: true,
-      spotlight: true,
     },
   )
 
@@ -64,16 +62,19 @@ const connect = async () => {
 
 const disconnect = async () => {
   // 接続を切断する
-  await sendrecv.disconnect()
+  await sendrecv?.disconnect()
+
   // remoteVideos を全て削除する
   const remoteVideos = document.querySelector('#remote-videos')
-  if (remoteVideos !== null) {
-    while (remoteVideos.firstChild) {
-      remoteVideos.firstChild.remove()
-    }
+  while (remoteVideos?.firstChild) {
+    remoteVideos.firstChild.remove()
   }
+
   // 自分の MediaStream の参照を消す
   document.querySelector<HTMLVideoElement>('#local-video')!.srcObject = null
+
+  // 自分の MediaStream の各トラックを停止する
+  localStream?.getTracks().forEach((track) => track.stop())
 }
 
 // DOMContentLoaded イベントは、ページ全体が読み込まれ、DOMが準備できたときに発生する
