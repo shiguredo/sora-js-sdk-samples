@@ -46,9 +46,8 @@ const connect = async () => {
   // removetrack は MediaStream.onremovetrack
   sendrecv.on('removetrack', (event) => {
     // target.id から stream.id を取得する
-    const target = event.target as MediaStream
-    if (target) {
-      document.querySelector<HTMLVideoElement>(`#remote-video-${target.id}`)!.remove()
+    if (event.target instanceof MediaStream) {
+      document.querySelector<HTMLVideoElement>(`#remote-video-${event.target.id}`)!.remove()
     }
   })
 

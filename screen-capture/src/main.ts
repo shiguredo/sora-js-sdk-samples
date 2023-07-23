@@ -45,9 +45,8 @@ const connectSendrecv = async () => {
   sendrecv.on('removetrack', (event) => {
     // target.id から stream.id を取得する
     // target は MediaStream なので id を持っている
-    const target = event.target as MediaStream
-    if (target) {
-      document.querySelector<HTMLVideoElement>(`#remote-video-${target.id}`)!.remove()
+    if (event.target instanceof MediaStream) {
+      document.querySelector<HTMLVideoElement>(`#remote-video-${event.target.id}`)!.remove()
     }
   })
 
