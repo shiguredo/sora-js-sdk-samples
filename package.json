@@ -19,7 +19,7 @@
     "eslint-plugin-prettier": "5.0.1",
     "prettier": "3.0.3",
     "typescript": "5.2.2",
-    "vite": "4.4.11"
+    "vite": "4.4.12"
   },
   "dependencies": {
     "sora-js-sdk": "2023.1.0"
