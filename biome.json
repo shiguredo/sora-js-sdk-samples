@@ -11,11 +11,7 @@
   },
   "formatter": {
     "enabled": true,
-    "formatWithErrors": false,
-    "ignore": [],
-    "indentStyle": "space",
-    "indentWidth": 2,
-    "lineWidth": 100
+    "indentStyle": "space"
   },
   "json": {
     "parser": {
@@ -23,23 +19,13 @@
     },
     "formatter": {
       "enabled": true,
-      "indentStyle": "space",
-      "indentWidth": 2,
-      "lineWidth": 100
+      "indentStyle": "space"
     }
   },
   "javascript": {
     "formatter": {
       "enabled": true,
-      "quoteStyle": "single",
-      "jsxQuoteStyle": "double",
-      "trailingComma": "all",
-      "semicolons": "asNeeded",
-      "arrowParentheses": "always",
-      "indentStyle": "space",
-      "indentWidth": 2,
-      "lineWidth": 100,
-      "quoteProperties": "asNeeded"
+      "indentStyle": "space"
     }
   }
 }
