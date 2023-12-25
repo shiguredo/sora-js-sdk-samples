@@ -1,4 +1,4 @@
-import Sora, { SoraConnection, ConnectionPublisher } from "sora-js-sdk";
+import Sora, { ConnectionPublisher, SoraConnection } from "sora-js-sdk";
 
 // Sora の接続
 let sora: SoraConnection;
