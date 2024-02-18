@@ -23,12 +23,15 @@ const connect = async () => {
   sendrecv = sora.sendrecv(
     channelId,
     { access_token: accessToken },
+    // 音声は送信しない
     { audio: false },
   );
 
-  sendrecv.on("track", (event) => {
-    // ストリームは一つしか入ってこない
+  // track コールバックは audio トラック / video トラックそれぞれで呼ばれる
+  sendrecv.on("track", (event: RTCTrackEvent) => {
+    // Sora で 1 クライアントからは必ず 1 ストリームのみ配信されるので [0] で問題無い
     const remoteStream = event.streams[0];
+    console.log(`${remoteStream.id}, ${event.track.kind}`);
 
     const remoteVideoStreamId = `remote-video-${remoteStream.id}`;
     // その stream.id が存在しない場合のみ HTML を追加
