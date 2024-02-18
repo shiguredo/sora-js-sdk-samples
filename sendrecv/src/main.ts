@@ -63,6 +63,7 @@ const connect = async () => {
     }
   });
 
+  // シグナリング通知を利用して接続に成功したことを確認する
   sendrecv.on("notify", (event: SignalingNotifyMessage) => {
     if (
       event.event_type === "connection.created" &&
