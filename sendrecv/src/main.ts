@@ -49,7 +49,7 @@ const connect = async () => {
   });
 
   // removetrack は MediaStream.onremovetrack
-  sendrecv.on("removetrack", (event) => {
+  sendrecv.on("removetrack", (event: MediaStreamTrackEvent) => {
     // target.id から stream.id を取得する
     // target は MediaStream なので id を持っている
     if (event.target instanceof MediaStream) {
