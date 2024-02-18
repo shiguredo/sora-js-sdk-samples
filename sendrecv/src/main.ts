@@ -1,4 +1,8 @@
-import Sora, { ConnectionPublisher, SoraConnection } from "sora-js-sdk";
+import Sora, {
+  ConnectionPublisher,
+  SignalingNotifyMessage,
+  SoraConnection,
+} from "sora-js-sdk";
 
 // Sora の接続
 let sora: SoraConnection;
@@ -56,6 +60,15 @@ const connect = async () => {
       document
         .querySelector<HTMLVideoElement>(`#remote-video-${event.target.id}`)!
         .remove();
+    }
+  });
+
+  sendrecv.on("notify", (event: SignalingNotifyMessage) => {
+    if (
+      event.event_type === "connection.created" &&
+      event.connection_id === sendrecv.connectionId
+    ) {
+      console.log("接続が確立しました");
     }
   });
 
