@@ -2,74 +2,13 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-このリポジトリには、 [Sora JavaScript SDK](https://github.com/shiguredo/sora-js-sdk) を利用したサンプルアプリを掲載しています。
+## アーカイブ
 
-## About Shiguredo's open source software
+このリポジトリはアーカイブしました。
 
-We will not respond to PRs or issues that have not been discussed on Discord. Also, Discord is only available in Japanese.
+Sora JavaScript SDK のサンプルは Sora JavaScript SDK のリポジトリのサンプルを利用してください。
 
-Please read https://github.com/shiguredo/oss/blob/master/README.en.md before use.
-
-## 時雨堂のオープンソースソフトウェアについて
-
-利用前に https://github.com/shiguredo/oss をお読みください。
-
-## 対応 WebRTC SFU Sora
-
-- WebRTC SFU Sora 2023.1.0 以降
-
-## 利用方法
-
-### インストール
-
-```console
-$ pnpm install
-```
-
-### sendrecv
-
-送受信ができるサンプルです。
-
-- シグナリング URL 指定
-- チャネル ID 指定
-- アクセストークン指定
-  - `metadata: {access_token: "<access_token>"}`
-- 接続ボタン
-- 切断ボタン
-
-複数のタブやブラウザで開いて接続してみてください。
-
-```console
-$ pnpm run sendrecv
-```
-
-### video-codec-type
-
-sendrecv に映像コーデックを指定できるようにしたサンプルです。
-
-送受信ができるサンプルです。
-
-- シグナリング URL 指定
-- チャネル ID 指定
-- アクセストークン指定
-  - `metadata: {access_token: "<access_token>"}`
-- ビデオコーデックタイプ指定
-- 接続ボタン
-- 切断ボタン
-
-複数のタブやブラウザで開いて接続してみてください。
-
-```
-$ pnpm run video-codec-type
-```
-
-### 環境変数設定
-
-`.env.local.sample` を `.env.local` に変更してシグナリング URL とチャネル ID を指定します。
-
-### 起動
-
-それぞれのディレクトリで `pnpm run dev` を実行します。
+https://github.com/shiguredo/sora-js-sdk/tree/develop/examples
 
 ## ライセンス
 
