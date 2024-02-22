@@ -43,8 +43,6 @@ $ pnpm install
 $ pnpm run sendrecv
 ```
 
-[CodeSandbox](https://codesandbox.io/p/github/shiguredo/sora-js-sdk-samples/codesandbox/sendrecv)
-
 ### video-codec-type
 
 sendrecv に映像コーデックを指定できるようにしたサンプルです。
@@ -64,8 +62,6 @@ sendrecv に映像コーデックを指定できるようにしたサンプル�
 ```
 $ pnpm run video-codec-type
 ```
-
-[CodeSandbox](https://codesandbox.io/p/github/shiguredo/sora-js-sdk-samples/codesandbox/video-codec-type)
 
 ### 環境変数設定
 
